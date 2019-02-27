@@ -9,3 +9,5 @@ int int main(int argc, char const *argv[]) {
   std::cout << nome << '\n';
   return 0;
 }
+
+//using namespace std; -> não é necessário do uso do std:: antes do comandos
