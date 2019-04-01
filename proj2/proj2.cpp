@@ -29,12 +29,11 @@ int main() {
     }
     dat.close();
   }
-  //cout << squares[0].id << squares[0].v1[0] << squares[0].v1[1] << squares[0].v2[0] << squares[0].v2[1] <<
-  //squares[0].v3[0] << squares[0].v3[1] << squares[0].v4[0] << squares[0].v4[1];
-  intersec(squares[0], squares[1]);
-  intersec(squares[1], squares[2]);
-  intersec(squares[1], squares[3]);
-  intersec(squares[5], squares[4]);
+  for(int i = 0; i < (int)squares.size(); i++){
+    for(int n = 1; n < (int)squares.size(); n++){
+      intersec(squares[i], squares[n]);
+    }
+  }
   return 0;
 }
 
@@ -45,16 +44,14 @@ void intersec(square s1, square s2) {
   }else{
     if(s1.v2[0] < s2.v2[0] && s1.v1[0] > s2.v1[0] && s1.v2[1] < s2.v2[1] && s1.v1[1] > s2.v1[1]){ //s1 dentro de s2
       a = (s1.v1[0]- s1.v2[0]) * (s1.v1[1]- s1.v2[1]);
-    }else if(s2.v2[0] < s1.v2[0] && s2.v1[0] > s1.v1[0] && s2.v2[1] < s1.v2[1] && s2.v1[1] > s1.v1[1]){ //s2 dentro de s1
-      a = (s2.v1[0]- s2.v2[0]) * (s2.v1[1]- s2.v2[1]);
-    }else if(s1.v2[0] > s2.v1[0] && s2.v1[1] < s1.v2[1]){
+    }else if(s1.v2[0] > s2.v1[0] && s2.v1[1] < s1.v2[1] && s2.v2[1] > s1.v2[1] && s2.v2[0] > s1.v2[0]){// s1 a direita de s2
       a = (s1.v2[0] - s2.v1[0])*(s1.v2[1] - s2.v1[1]);
-    }else if(s2.v2[0] > s1.v1[0] && s1.v1[1] < s2.v2[1]){
-      a = (s2.v2[0] - s1.v1[0])*(s2.v2[1] - s1.v1[1]);
+    }else if(s1.v2[0] > s2.v1[0] && s2.v2[1] > s1.v1[1] && s2.v2[0] > s1.v2[0] && s2.v2[1] > s1.v1[1]){// s1 a esquerda de s2
+      a = (s1.v2[0] - s2.v1[0])*(s2.v2[1] - s1.v1[1]);
+    }else{
+      return;
     }
-    //calcular a area da intersec
   }
-  //a = 0;
   cout << s1.id << " intercepts " << s2.id << " with area " << a << "\n";
   return;
 }
