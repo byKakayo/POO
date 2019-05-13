@@ -1,6 +1,7 @@
 #include <iostream>
 #include "limited_counter.hpp"
 
+using namespace std;
 
 void test_value(std::string test, int got, int expected) {
   if (got == expected) {
@@ -48,4 +49,5 @@ int main(int, char const *[]) {
   test_value("default initial value", c2.value(), 0);
   c2.down();
   test_value("default minimum value", c2.value(), 0);
+  return 0;
 }

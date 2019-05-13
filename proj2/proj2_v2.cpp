@@ -5,8 +5,8 @@ using namespace std;
 //Estrutura do quadrado
 struct square {
   string id;
-  vector<float> v1;
-  vector<float> v2; //Vértice do quadrado oposto ao vértice dado
+  vector<double> v1;
+  vector<double> v2; //Vértice do quadrado oposto ao vértice dado
 };
 
 void intersec(square s1, square s2, int flag);
@@ -16,10 +16,10 @@ int main() {
   vector<square> squares;
 
   //Leitura dos dados do arquivo .dat
-  ifstream dat("squares2.dat");
+  ifstream dat("squares7.dat");
   if (dat.is_open()) {
     string line, id;
-    float v1x, v1y, size;
+    double v1x, v1y, size;
     //Enquanto existirem linhas no arquivo guarda um novo quadrado no vetor
     while (getline(dat, line)) {
       square sq;
@@ -40,31 +40,44 @@ int main() {
       intersec(squares[i], squares[n], 0);
     }
   }
+  //intersec(squares[10], squares[12], 0);
   return 0;
 }
 
 void intersec(square s1, square s2, int flag) {
-  float a;
+  double a, x;
   a = 0.0;
   //Condição de não intersecção
   if((s1.v2[0] <= s2.v1[0] || s2.v2[0] <= s1.v1[0]) || (s1.v2[1] <= s2.v1[1] || s2.v2[1] <= s1.v1[1])) {
     return;
   }else{
-    if(s1.v1[0] >= s2.v1[0] && s1.v1[1] >= s2.v1[1] && s2.v2[0] >= s1.v2[0] && s2.v2[1] >= s1.v2[1]){
-      cout << "5 ";
-      a = (s1.v1[0]- s1.v2[0]) * (s1.v1[1]- s1.v2[1]);
-    }else if(s1.v2[0] > s2.v1[0] && s2.v2[1] > s1.v1[1] && s2.v2[0] > s1.v2[0] && s2.v2[1] < s1.v2[1]){
-      cout << "1 ";
-      a = (s1.v2[0] - s2.v1[0])*(s2.v2[1] - s1.v1[1]);
-    }else if(s1.v2[0] > s2.v1[0] && s1.v2[1] > s2.v1[1] && s2.v2[1] > s1.v2[1] && s2.v2[0] > s1.v2[0]){
-      cout << "2 ";
-      a = (s1.v2[0] - s2.v1[0])*(s1.v2[1] - s2.v1[1]);
-    }else if(s1.v1[0] <= s2.v1[0] && s2.v2[0] <= s1.v2[0] && s2.v2[1] > s1.v2[1]){
-      cout << "3 ";
+    if(s1.v1[0] >= s2.v1[0] && s1.v2[0] <= s2.v2[0] && s1.v1[1] >= s2.v1[1] && s1.v2[1] <= s2.v2[1]){ //s1 dentro de s2
+      //cout << "3 ";
+      a = (s1.v2[0] - s1.v1[0])*(s1.v2[1] - s1.v1[1]);
+    }else if(s2.v2[0] > s1.v2[0] && s2.v1[0] > s1.v1[0]){ //Condição de s2 a direita de s1
+      x = s1.v2[0] - s2.v1[0];
+      if(s2.v1[1] > s1.v1[1] && s2.v2[1] > s1.v2[1]){
+        //cout << "1.2 ";
+        a = x * (s1.v2[1] - s2.v1[1]);
+      }else if(s2.v1[1] < s1.v1[1]){
+        if(s1.v2[1] > s2.v2[1]){
+          //cout << "1.3 ";
+          a = x * (s2.v2[1] - s1.v1[1]);
+        }else{
+          //cout << "1.4 ";
+          a = x * (s1.v2[1] - s1.v1[1]);
+        }
+      }else if(s2.v2[1] <= s1.v2[1]){
+        //cout << "1.1 ";
+        a = x * (s2.v2[1] - s2.v1[1]);
+      }
+      //cout << "AQUI ";
+    }else if(s2.v2[1] > s1.v2[1] && s2.v2[0] <= s1.v2[0] && s1.v1[0] <= s2.v1[0]){//Condição de s2 acima de s1
+      //cout << "2.2 ";
       a = (s2.v2[0] - s2.v1[0])*(s1.v2[1] - s2.v1[1]);
-    }else if(s1.v1[1] >= s2.v1[1] && s1.v2[1] <= s2.v2[1] && s1.v1[0] < s2.v1[0]){
-      cout << "4 ";
-      a = (s1.v2[0] - s2.v1[0])*(s1.v2[1] - s1.v1[1]);
+    }else if(s2.v2[1] > s1.v2[1] && s1.v1[0] > s2.v1[0] && s1.v2[0] < s2.v2[0]){
+      //cout << "2.1 ";
+      a = (s1.v2[0] - s1.v1[0])*(s1.v2[1] - s2.v1[1]);
     }else{
       if(flag == 0){
         intersec(s2, s1, 1);
