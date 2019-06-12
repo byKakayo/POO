@@ -23,9 +23,10 @@ public:
   bool is_empty() const;
 };
 
+//Classe de exceção fila vazia
 class queue_empty{};
 
-// Insere v na pilha.
+// Insere v na fila.
 template <typename type>
 void Queue<type>::push(type v) {
   Node *new_node = new Node{v, nullptr};
@@ -40,11 +41,12 @@ void Queue<type>::push(type v) {
   _back = new_node;
 }
 
-// Descarta elemento no topo da pilha.
+// Descarta elemento no topo da fila.
 // Pré-condição: !is_empty()
 template <typename type>
 void Queue<type>::pop() {
   if(is_empty()){
+    //Exceção
     throw queue_empty{};
   }
   // Passa o _front para o próximo.
@@ -55,17 +57,18 @@ void Queue<type>::pop() {
   }
 }
 
-// Retorna elemento do topo da pilha.
+// Retorna elemento do topo da fila.
 // Pré-condição: !is_empty()
 template <typename type>
 type Queue<type>::front() const {
   if(is_empty()){
+    //Exceção
     throw queue_empty{};
   }
   return _front->value;
 }
 
-// Verifica se a pilha está vazia.
+// Verifica se a fila está vazia.
 template <typename type>
 bool Queue<type>::is_empty() const { return _front.get() == nullptr; }
 
@@ -83,6 +86,7 @@ int main(int, char const *[]) {
 
   std::cout << "Fila atual: ";
   while(true){
+    //Tenta retirar da fila
     try {
       auto x = my_queue.front();
       my_queue.pop();
